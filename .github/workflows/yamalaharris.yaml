@@ -42,32 +42,4 @@ jobs:
     name: Build Docker Image
     runs-on: ubuntu-latest
     needs: test # This job depends on the 'test' job succeeding
-
-    # Add permissions for pushing to GitHub Container Registry (GHCR)
-    permissions:
-      contents: read
-      packages: write # Required to push docker image packages
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      # Step to log in to a container registry (e.g., GHCR or Docker Hub)
-      # Option 1: GitHub Container Registry (Recommended for GitHub Actions)
-      - name: Log in to GitHub Container Registry
-        uses: docker/login-action@v3
-        with:
-          registry: ghcr.io
-          # GITHUB_TOKEN is automatically generated and available
-          username: ${{ github.actor }} # Use the actor initiating the workflow
-          password: ${{ secrets.GITHUB_TOKEN }}
-          
-      - name: Build and push Docker image
-        uses: docker/build-push-action@v5
-        with:
-          context: .
-          push: true
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-          image: ghcr.io/${{ github.repository }}/your-webpage-image:${{ github.sha }}
+    
